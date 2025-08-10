@@ -31,3 +31,7 @@ var configuration = new ConfigurationBuilder()
 
 var account = new Account(configuration["Ethereum:PrivateKey"]);
 var web3 = new Web3(account, configuration["Ethereum:NodeUrl"]);
+var transaction = await web3
+    .Eth.GetEtherTransferService()
+    .TransferEtherAndWaitForReceiptAsync(configuration["Ethereum:ToAddress"], 0.01m, 2);
+Console.WriteLine($"From:{transaction.From},Root:{transaction.Root}");
