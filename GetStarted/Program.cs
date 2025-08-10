@@ -29,6 +29,7 @@ var configuration = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .Build();
 
+// 创建一个账户实例，使用钱包私钥和节点URL
 var account = new Account(configuration["Ethereum:PrivateKey"]);
 var web3 = new Web3(account, configuration["Ethereum:NodeUrl"]);
 var transaction = await web3
