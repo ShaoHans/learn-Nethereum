@@ -87,7 +87,7 @@ internal class TransactionMonitoringBgService : BackgroundService
                             var confirmations = (int)(latestBlockNumber - blockNumber + 1);
                             Console.WriteLine($"检测到充值交易: {tx.TransactionHash}");
                             Console.WriteLine($"来自: {tx.From} -> {tx.To}");
-                            Console.WriteLine($"金额: {Web3.Convert.FromWei(tx.Value)} BNB");
+                            Console.WriteLine($"金额: {Web3.Convert.FromWei(tx.Value)} ETH");
                             Console.WriteLine(
                                 $"所在区块: {blockNumber}, 当前确认数: {confirmations}"
                             );
