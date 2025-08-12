@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
@@ -17,6 +18,9 @@ internal class PollingMonitoringBgService : BackgroundService
 
     // 记录上次处理到的块
     private static BigInteger lastProcessedBlock = 0;
+
+    // ERC20 Token 合约地址（示例：BSC USDT）
+    private const string TokenContractAddress = "0x55d398326f99059ff775485246999027b3197955";
 
     private readonly string _rpcUrl = string.Empty;
     private readonly string _toAddress = string.Empty;
@@ -75,24 +79,89 @@ internal class PollingMonitoringBgService : BackgroundService
                         block?.Transactions?.Length ?? 0
                     );
 
-                    if (block?.Transactions != null)
+                    if (
+                        block == null
+                        || block.Transactions == null
+                        || block.Transactions.Length <= 0
+                    )
                     {
-                        foreach (
-                            var tx in block.Transactions.Where(x =>
-                                x.To != null
-                                && x.To.Equals(_toAddress, StringComparison.OrdinalIgnoreCase)
-                            )
-                        )
+                        continue;
+                    }
+
+                    foreach (var tx in block.Transactions)
+                    {
+                        if (string.IsNullOrEmpty(tx.To))
+                        {
+                            continue;
+                        }
+
+                        var to = tx.To.ToLower();
+
+                        // 1️ 主币充值检测
+                        if (to == _toAddress && tx.Value.Value > 0)
                         {
                             var confirmations = (int)(latestBlockNumber - blockNumber + 1);
-                            Console.WriteLine($"检测到充值交易: {tx.TransactionHash}");
+                            Console.WriteLine($"【主币充值】交易: {tx.TransactionHash}");
                             Console.WriteLine($"来自: {tx.From} -> {tx.To}");
-                            Console.WriteLine($"金额: {Web3.Convert.FromWei(tx.Value)} ETH");
-                            Console.WriteLine(
-                                $"所在区块: {blockNumber}, 当前确认数: {confirmations}"
-                            );
-                            Console.WriteLine("----------------------------------------------");
+                            Console.WriteLine($"金额: {Web3.Convert.FromWei(tx.Value)} BNB");
+                            Console.WriteLine($"区块: {blockNumber}, 确认数: {confirmations}");
+                            Console.WriteLine("--------------------------------------------------");
                         }
+
+                        // 2️ Token充值检测（通过事件日志解析 Transfer）
+                        //if (to == TokenContractAddress)
+                        //{
+                        //    var receipt =
+                        //        await web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(
+                        //            tx.TransactionHash
+                        //        );
+                        //    if (receipt?.Logs == null)
+                        //    {
+                        //        continue;
+                        //    }
+
+                        //    foreach (var log in receipt.Logs)
+                        //    {
+                        //        if (log.Topics == null || log.Topics.Length != 3)
+                        //        {
+                        //            continue;
+                        //        }
+
+                        //        // ERC20 Transfer事件签名哈希
+                        //        if (
+                        //            log.Topics[0].ToString()
+                        //            == "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+                        //        )
+                        //        {
+                        //            var toAddress = string.Concat(
+                        //                "0x",
+                        //                log.Topics[2].ToString().AsSpan(26)
+                        //            );
+                        //            //if (toAddress.ToLower() == _toAddress)
+                        //            {
+                        //                var value = new BigInteger(log.Data.HexToByteArray());
+                        //                var confirmations = (int)(
+                        //                    latestBlockNumber - blockNumber + 1
+                        //                );
+
+                        //                Console.WriteLine(
+                        //                    $"【Token充值】交易: {tx.TransactionHash}"
+                        //                );
+                        //                Console.WriteLine($"Token合约: {TokenContractAddress}");
+                        //                Console.WriteLine($"来自: {tx.From} -> {toAddress}");
+                        //                Console.WriteLine(
+                        //                    $"金额: {Web3.Convert.FromWei(value)} USDT"
+                        //                );
+                        //                Console.WriteLine(
+                        //                    $"区块: {blockNumber}, 确认数: {confirmations}"
+                        //                );
+                        //                Console.WriteLine(
+                        //                    "-----------------------------------------------"
+                        //                );
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                 }
 
