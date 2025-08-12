@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetStarted", "GetStarted\Ge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDWallet", "HDWallet\HDWallet.csproj", "{EADB3806-269E-4A8F-B62A-C775AFB2E939}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PollingMonitoring", "PollingMonitoring\PollingMonitoring.csproj", "{2927C2E9-B876-402F-ABAE-981295D15F89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EADB3806-269E-4A8F-B62A-C775AFB2E939}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EADB3806-269E-4A8F-B62A-C775AFB2E939}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EADB3806-269E-4A8F-B62A-C775AFB2E939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2927C2E9-B876-402F-ABAE-981295D15F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2927C2E9-B876-402F-ABAE-981295D15F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2927C2E9-B876-402F-ABAE-981295D15F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2927C2E9-B876-402F-ABAE-981295D15F89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
