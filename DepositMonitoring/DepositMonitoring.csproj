@@ -12,6 +12,8 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
 		<PackageReference Include="Nethereum.HdWallet" Version="5.0.0" />
+		<PackageReference Include="Nethereum.JsonRpc.WebSocketClient" Version="5.0.0" />
+		<PackageReference Include="Nethereum.RPC.Reactive" Version="5.0.0" />
 		<PackageReference Include="Nethereum.Web3" Version="5.0.0" />
 	</ItemGroup>
 	
