@@ -48,10 +48,10 @@ internal class WsMonitoringBgService : BackgroundService
 
                 foreach (var tx in block.Transactions)
                 {
-                    //if (
-                    //    !string.IsNullOrEmpty(tx.To)
-                    //    && tx.To.Equals(_toAddress, StringComparison.OrdinalIgnoreCase)
-                    //)
+                    if (
+                        !string.IsNullOrEmpty(tx.To)
+                        && tx.To.Equals(_toAddress, StringComparison.OrdinalIgnoreCase)
+                    )
                     {
                         Console.WriteLine(
                             $"[ETH 充值] 来自 {tx.From} 金额 {Web3.Convert.FromWei(tx.Value)} ETH 哈希 {tx.TransactionHash}"
@@ -61,6 +61,7 @@ internal class WsMonitoringBgService : BackgroundService
             });
 
         await client.StartAsync();
+        await newBlockSubscription.SubscribeAsync();
         _logger.LogInformation("充值监听后台任务已启动...");
 
         await Task.Delay(Timeout.Infinite, stoppingToken);
