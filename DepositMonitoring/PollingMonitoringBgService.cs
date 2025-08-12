@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
-namespace PollingMonitoring;
+namespace DepositMonitoring;
 
-internal class TransactionMonitoringBgService : BackgroundService
+internal class PollingMonitoringBgService : BackgroundService
 {
     // 需要的确认数
     private const int RequiredConfirmations = 12;
@@ -23,9 +23,9 @@ internal class TransactionMonitoringBgService : BackgroundService
 
     private readonly ILogger _logger;
 
-    public TransactionMonitoringBgService(
+    public PollingMonitoringBgService(
         IConfiguration configuration,
-        ILogger<TransactionMonitoringBgService> logger
+        ILogger<PollingMonitoringBgService> logger
     )
     {
         _logger = logger;

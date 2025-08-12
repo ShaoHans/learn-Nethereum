@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PollingMonitoring;
+using DepositMonitoring;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(
@@ -14,7 +14,7 @@ var host = Host.CreateDefaultBuilder(args)
     )
     .ConfigureServices(services =>
     {
-        services.AddHostedService<TransactionMonitoringBgService>();
+        services.AddHostedService<PollingMonitoringBgService>();
     })
     .Build();
 
