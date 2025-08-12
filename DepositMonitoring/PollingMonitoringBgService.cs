@@ -95,10 +95,8 @@ internal class PollingMonitoringBgService : BackgroundService
                             continue;
                         }
 
-                        var to = tx.To.ToLower();
-
                         // 1️ 主币充值检测
-                        if (to == _toAddress && tx.Value.Value > 0)
+                        if (tx.To.Equals(_toAddress, StringComparison.OrdinalIgnoreCase) && tx.Value.Value > 0)
                         {
                             var confirmations = (int)(latestBlockNumber - blockNumber + 1);
                             Console.WriteLine($"【主币充值】交易: {tx.TransactionHash}");
@@ -109,7 +107,7 @@ internal class PollingMonitoringBgService : BackgroundService
                         }
 
                         // 2️ Token充值检测（通过事件日志解析 Transfer）
-                        //if (to == TokenContractAddress)
+                        //if (tx.To.Equals(TokenContractAddress, StringComparison.OrdinalIgnoreCase))
                         //{
                         //    var receipt =
                         //        await web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(
